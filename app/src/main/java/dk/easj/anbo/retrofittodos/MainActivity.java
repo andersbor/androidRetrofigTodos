@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAndShowAllTodos() {
-        TodoService bookStoreService = ApiUtils.getTodoService();
+        TodoService todoService = ApiUtils.getTodoService();
 
-        Call<List<Todo>> getAllBooksCall = bookStoreService.getAllTodos();
+        Call<List<Todo>> getAllBooksCall = todoService.getAllTodos();
 
         getAllBooksCall.enqueue(new Callback<List<Todo>>() {
             @Override
