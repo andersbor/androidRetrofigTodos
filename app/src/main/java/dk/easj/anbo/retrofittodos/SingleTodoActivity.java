@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,17 +46,29 @@ public class SingleTodoActivity extends AppCompatActivity {
     public void deleteButtonClicked(View view) {
         // TODO DELETE
 
+        Log.d(LOG_TAG, "deleteButtonClicked started");
+
         TodoService todoService = ApiUtils.getTodoService();
         Call<Void> deleteCall = todoService.deleteTodo(todo.getId());
         deleteCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d(LOG_TAG, response.code() + " " + response.message());
+                if (response.isSuccessful()) {
+                    Toast.makeText(SingleTodoActivity.this, "Deleted " + todo, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    TextView messageView = findViewById(R.id.singleTodoMessageTextView);
+                    messageView.setText("Problem: " + response.code() + " " + response.message());
+                }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.d(LOG_TAG, t.getMessage());
+                Log.e(LOG_TAG, t.getMessage());
+                TextView messageView = findViewById(R.id.singleTodoMessageTextView);
+                messageView.setText("Problem: " + t.getMessage());
+
             }
         });
     }

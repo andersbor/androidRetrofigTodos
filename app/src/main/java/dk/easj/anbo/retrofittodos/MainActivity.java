@@ -33,12 +33,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+        fab.setOnClickListener(view -> {
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            //        .setAction("Action", null).show();
+            Intent intent = new Intent(this, AddTodoActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -51,15 +50,15 @@ public class MainActivity extends AppCompatActivity {
     private void getAndShowAllTodos() {
         TodoService todoService = ApiUtils.getTodoService();
 
-        Call<List<Todo>> getAllBooksCall = todoService.getAllTodos();
+        Call<List<Todo>> getAllTodosCall = todoService.getAllTodos();
 
-        getAllBooksCall.enqueue(new Callback<List<Todo>>() {
+        getAllTodosCall.enqueue(new Callback<List<Todo>>() {
             @Override
             public void onResponse(Call<List<Todo>> call, Response<List<Todo>> response) {
-                List<Todo> allBooks = response.body();
-                Log.d(LOG_TAG, allBooks.toString());
+                List<Todo> allTodos = response.body();
+                Log.d(LOG_TAG, allTodos.toString());
                 // TODO populate RecyclerView, including click on elements
-                populateRecyclerView(allBooks);
+                populateRecyclerView(allTodos);
             }
 
             @Override
@@ -74,16 +73,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         RecyclerViewSimpleAdapter adapter = new RecyclerViewSimpleAdapter<>(allBooks);
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new RecyclerViewSimpleAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, Object item) {
-                Todo todo = (Todo) item;
-                Log.d(LOG_TAG, item.toString());
-                Intent intent = new Intent(MainActivity.this, SingleTodoActivity.class);
-                intent.putExtra(SingleTodoActivity.TODO, todo);
-                Log.d(LOG_TAG, "putExtra " + todo.toString());
-                startActivity(intent);
-            }
+        adapter.setOnItemClickListener((view, position, item) -> {
+            Todo todo = (Todo) item;
+            Log.d(LOG_TAG, item.toString());
+            Intent intent = new Intent(MainActivity.this, SingleTodoActivity.class);
+            intent.putExtra(SingleTodoActivity.TODO, todo);
+            Log.d(LOG_TAG, "putExtra " + todo.toString());
+            startActivity(intent);
         });
     }
 

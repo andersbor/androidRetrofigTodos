@@ -7,19 +7,19 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Todo implements Serializable {
+class Todo implements Serializable {
     @SerializedName("userId")
     @Expose
-    private Integer userId;
+    public Integer userId;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    public Integer id;
     @SerializedName("title")
     @Expose
-    private String title;
+    public String title;
     @SerializedName("completed")
     @Expose
-    private Boolean completed;
+    public Boolean completed;
 
     public Integer getUserId() {
         return userId;

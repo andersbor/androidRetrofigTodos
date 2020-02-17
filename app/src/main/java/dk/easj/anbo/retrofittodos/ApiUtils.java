@@ -1,6 +1,6 @@
 package dk.easj.anbo.retrofittodos;
 
-public class ApiUtils {
+class ApiUtils {
     private ApiUtils() {
     }
 
